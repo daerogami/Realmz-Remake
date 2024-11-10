@@ -4,6 +4,7 @@ class_name ExplorationState
 
 
 var map : Map
+var state_machine : GameStateMachine
 #var last_dir_input : Vector2 = Vector2.ZERO
 #var time_since_last_dir_input : float = 0
 
@@ -12,6 +13,7 @@ var map : Map
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	state_machine = get_parent()
 	pass # Replace with function body.
 
 func exit() :
@@ -46,14 +48,7 @@ func enter(_msg : Dictionary = {}) -> void:
 func _state_process(_delta: float) -> void:
 #	print("_state_process : "+name)
 	#Set the mouse cursor...
-	var mousepos : Vector2 = UI.ow_hud.get_local_mouse_position()
-	var wsize : Vector2 = ScreenUtils.get_logical_window_size(self)
-	if mousepos.x+320<wsize.x and mousepos.y+200<wsize.y :
-		var targoffset : Vector2 = GameGlobal.map.focuscharacter.get_pixel_position()
-		var cursordir = StateMachine.get_dir_input_from_mouse(_delta, targoffset)
-		Input.set_custom_mouse_cursor(UI.cursor_map_dict[cursordir])
-	else :
-		Input.set_custom_mouse_cursor((UI.cursor_sword))
+	state_machine.call_deferred("set_arrow_mouse_cursor", _delta)
 
 
 func _on_dir_input_received(input : Vector2i, _is_keyboard : bool) -> void :

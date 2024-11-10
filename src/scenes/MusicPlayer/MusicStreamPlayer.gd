@@ -95,6 +95,7 @@ func play_music_specific(mname : String) :
 		return
 
 func play_music(musicdict : Dictionary) :
+	pass
 	print("previously playing : ", currently_playing["path"])
 #	print("play_music\n",currently_playing["path"],'\n',map_music_dict["path"])
 	
@@ -118,6 +119,7 @@ func play_music(musicdict : Dictionary) :
 	modplayer.stop( )
 	set_stream(null)
 	stop()
+	
 	if musicdict["type"] == 'ogg' or musicdict["type"] == 'mp3':
 		print("MusicStreamPayer 113 musicdict : " , musicdict)
 		set_stream(musicdict["sound"])

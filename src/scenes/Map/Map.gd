@@ -365,7 +365,13 @@ func _draw() :  #map cells are  [ [used_tileset_name,t_id,true],
 						draw_texture_rect(i["texture"], Rect2(32*x,32*y,32,32), true)
 					if last_generated_path.has(Vector2(cam_x+x,cam_y+y)) :#Vector2(cam_x+x,cam_y+y)) :  #last_generated_path
 						draw_texture_rect(darktexture, Rect2(32*x,32*y,32,32), true)
-
+			
+			#DEBUG
+			if aStar22.is_point_solid(Vector2i(cam_x+x, cam_y+y)) :
+				#draw_texture_rect(path_texture, Rect2(32*x,32*y,32,32), true)
+				draw_texture_rect(secret_texture, Rect2(32*x,32*y,32,32), true)
+			
+			
 			# draw terrain effects :
 			for t in terrainEffects :
 #				print("Map : There sia terrain effect, does it ", t["tiles"])
@@ -522,7 +528,7 @@ func dock_boat_at(pos : Vector2i) :
 	set_ow_character_icon(GameGlobal.player_characters[0].icon)
 
 func explore_tiles_from_tilepos(tpos : Vector2) -> void :
-	print("explore_tiles_from_tilepos ", tpos)
+	#print("explore_tiles_from_tilepos ", tpos)
 	explored_tiles[tpos.y][tpos.x] = 1
 	# do bresentham is neveral directions
 	#bresenham_line(startpt : Vector2, endpt : Vector2, min_range : int, max_range : int) -> Array :
@@ -540,6 +546,7 @@ func explore_tiles_from_tilepos(tpos : Vector2) -> void :
 				break
 
 func find_path(from : Vector2i, to : Vector2i, swimmer : bool, flying : bool, big : bool, crea : Creature, melee_enemies_on_the_way : bool) -> Array :
+	#var right_astar : SpecificAstar2D = aStar11 #get_right_graph_for_crea(crea)
 	var right_astar : SpecificAstar2D = get_right_graph_for_crea(crea)
 	print("MAP ASTAR CREA  SIZE : ", right_astar.crea_size)
 	var unblocked_poses : Array = []
@@ -557,6 +564,7 @@ func find_path(from : Vector2i, to : Vector2i, swimmer : bool, flying : bool, bi
 				#print("map.find_path , to who : "+who.creature.name+ ', at '+ str(who.creature.position)+", size: "+str(who.creature.size))
 				
 				if GameGlobal.is_map_tile_walkable_by_char(crea,ubp) :
+					#print("map find_path unlock ubp  unblockposition")
 					unblocked_poses.append(ubp)
 					pathfinder_clear_pos(ubp)
 	if melee_enemies_on_the_way :

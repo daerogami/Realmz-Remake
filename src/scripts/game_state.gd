@@ -92,13 +92,15 @@ func get_dir_input_from_kb()-> Array :
 
 
 func get_dir_input_from_mouse(_delta, offset : Vector2)->Vector2 :
+	#print("gamestate get_dir_input_from_mouse,  offset : ", offset)
 	var dir = Vector2.ZERO
 	var mousepos : Vector2 = GameGlobal.map.get_local_mouse_position()
 #	var mouseposrelative : Vector2 = mousepos - map.charactersnode.position - map.focuscharacter.get_pixel_position() - Vector2(16,16)
-	var mouseposrelative : Vector2 = mousepos - GameGlobal.map.charactersnode.position - offset - Vector2(16,16)
+	var mouseposrelative : Vector2 = mousepos - GameGlobal.map.charactersnode.position - offset - Vector2(8,8)
 	
 	if (abs(mouseposrelative.x) <=16 and abs(mouseposrelative.y) <=16) :
-		time_since_last_dir_input = GameGlobal.gamespeed
+		#time_since_last_dir_input = GameGlobal.gamespeed
+		#print("l102 gameèstate dir time_since_last_dir_input maxed, : ", dir)
 		return dir
 	else :
 		var angle = mouseposrelative.angle()
@@ -118,6 +120,7 @@ func get_dir_input_from_mouse(_delta, offset : Vector2)->Vector2 :
 			dir =  Vector2.UP
 		if abs(angle + 3*PI/4 )<=PI/8 :
 			dir =  Vector2.LEFT + Vector2.UP
+		#print("l122 gameèstate dir : ", dir)
 		return dir
 
 
@@ -145,6 +148,7 @@ func _process(delta):
 				#targoffset = GameGlobal.map.focuscharacter.get_pixel_position()
 			if GameGlobal.map.pressed :
 				maybe_input = StateMachine.get_dir_input_from_mouse(delta, targoffset)
+				#print("gamestate l150 send_dir_input ", maybe_input, " w offset ", targoffset)
 				send_dir_input(maybe_input, false)
 			#print("maybe_input ", maybe_input)
 		if maybe_input == Vector2i.ZERO :
@@ -165,7 +169,16 @@ func send_dir_input(input : Vector2, is_keyboard : bool) :
 				return
 		state._on_dir_input_received(input,is_keyboard )
 
-
+func set_arrow_mouse_cursor(_delta : float) :
+	var mousepos : Vector2 = UI.ow_hud.get_local_mouse_position()
+	var wsize : Vector2 = ScreenUtils.get_logical_window_size(self)
+	if mousepos.x+320<wsize.x and mousepos.y+200<wsize.y :
+		var targoffset : Vector2 = GameGlobal.map.focuscharacter.get_pixel_position()
+		#print("gamestate set_cursor get_dir_input_from_mouse, offset : ", targoffset)
+		var cursordir = StateMachine.get_dir_input_from_mouse(_delta, targoffset)
+		Input.set_custom_mouse_cursor(UI.cursor_map_dict[cursordir])
+	else :
+		Input.set_custom_mouse_cursor((UI.cursor_sword))
 
 #
 #func on_trying_to_move_to_tile_stack(crea : Creature, stack : Array, position : Vector2) : #exporation mode
@@ -284,7 +297,7 @@ func check_map_script(position) ->bool :
 		else :
 			print("StateMachine : mapscript doesnt have script "+s+", ok if it's mecause of a map change")
 
-	print("STateMachine finished check_map_script")
+	#print("STateMachine finished check_map_script")
 	if state==ex_menu_state :
 		print("StateMachine escape out of MenuState")
 		exit_ex_menu_state()

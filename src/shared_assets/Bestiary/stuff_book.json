@@ -38,7 +38,7 @@
 	  },
 	  "tools" :
 	  {
-	 "inventory" : [["Dagger",0],["Leather Cap",1], ["Bow",1]],
+	 "inventory" : [["Dagger",0],["Leather Cap",1], ["Bow",1] , ["Quiver",1] ],
 	 "money" : [2,0,0],
 	 "unarmed_melee_attacks" : [
 		{"weapon_dmg" : {"Physical" : [1,4], "Ice" : [1,2]}, "sound" : "slurpy.wav", "melee_atk_anim_icon" : "ATK_SLM", "melee_inflicted_traits" : [  ["t_poison.gd" , [1] ,1.0]  ] },

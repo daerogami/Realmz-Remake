@@ -3,7 +3,7 @@ const menuname : String = 'Hindered Attack (P)'
 const stacks : bool = false
 const trait_types : Array = []
 var chara
-power : int
+var power : int
 var trait_source : String = ''
 
 func _init(args : Array):

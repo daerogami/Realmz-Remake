@@ -162,7 +162,7 @@ func hide_owhudcontrol() :
 		c.hide()
 
 func update_fatigue_bar() :
-	print("ow_hud update_fatigue_bar : ", GameGlobal.fatigue ,", bar:", GameGlobal.fatigue * 128 / 172800, "/128" )
+	#print("ow_hud update_fatigue_bar : ", GameGlobal.fatigue ,", bar:", GameGlobal.fatigue * 128 / 172800, "/128" )
 	fatigueBar.value = GameGlobal.fatigue * 128 / GameGlobal.max_fatigue
 
 func fillCharactersRect() :

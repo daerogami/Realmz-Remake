@@ -19,7 +19,7 @@ extends Node
 func __MainScene() -> Node:
 	return get_node("/root/Main")
 #
-func __Resources() ->Node:
+func __Resources() ->CampaignResources:
 #	print ("get resources node here")
 	return get_node("/root/Main/Resources")
 #
@@ -30,4 +30,3 @@ func __Map() ->Node:
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-

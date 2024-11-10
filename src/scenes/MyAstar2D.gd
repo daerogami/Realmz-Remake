@@ -24,6 +24,7 @@ func _ready():
 
 func generate_graph(mapdata : Array, swimmer : bool, flyer : bool, big : bool) :
 	blocked_tiles.clear()
+	clear()
 	#voidset_point_solid(id: Vector2i, solid: bool = true)
 	#voidset_point_weight_scale(id: Vector2i, weight_scale: float)
 	var map_size_x : int = mapdata[0].size()
@@ -39,7 +40,9 @@ func generate_graph(mapdata : Array, swimmer : bool, flyer : bool, big : bool) :
 		# ts is an array of tile dicts, a  "tile stack"
 		for ts in l :
 			var weight : float = get_tilestack_cost(ts, swimmer, flyer, big)
+			
 			pos = Vector2i(y,x)
+			#print(pos, ' ',weight)
 			#if big :
 				#print("astar big crea : "+str(pos)+' size:'+str(crea_size)+' w8:' + str(weight))
 			
@@ -48,35 +51,50 @@ func generate_graph(mapdata : Array, swimmer : bool, flyer : bool, big : bool) :
 			if weight>=0 :
 				specific_set_point_weight_scale(pos, weight)
 			else :
-				specific_set_point_weight_scale(pos, 1000000)
+				#specific_set_point_weight_scale(pos, 1000000)
+				#set_point_solid(pos, true)
+				if pos.x>1 and pos.y > 1 :
+					for u in range(crea_size.x) :
+						for v in range(crea_size.y) :
+							set_point_solid(pos - Vector2i(u,v), true)
+				else :
+					set_point_solid(pos, true)
 			x += 1
 		y += 1
+	#update()
+	var ts2523 : Array = mapdata[25][23]
+	print("ASTAR DEBUG mapdata[25][23]  coord 25,23"  )
+	for t in ts2523 :
+		print(t)
 
 #@override    void set_point_weight_scale(id: Vector2i, weight_scale: float)
 func specific_set_point_weight_scale(pos : Vector2i, weight_scale: float) :
 	#● Vector2 get_point_position(id: Vector2i) const
 	#● float get_point_weight_scale(id: Vector2i) const
 	#first , we dont want to mes with points outsid the region
+	#update()
 	var region_end : Vector2i = region.end
-	for cx in range(crea_size.x) :
-		for cy in range(crea_size.y) :
-			if pos.x-cx<region_end.x and pos.y-cy<region_end.y and pos.x-cx>=0 and pos.y-cy>=0 :
-				var bpos : Vector2i =  pos-Vector2i(cx,cy)
-				var prev_weight : float = get_point_weight_scale(bpos)
-				#set_point_weight_scale(pos-Vector2i(cx,cy), max(weight_scale,prev_weight))
-				set_point_solid(pos-Vector2i(cx,cy), true)
+	#print("Astar specific_set_point_weight_scale ", crea_size )
+	#for cx in range(crea_size.x) :
+		#for cy in range(crea_size.y) :
+			#if pos.x-cx<region_end.x and pos.y-cy<region_end.y and pos.x-cx>=0 and pos.y-cy>=0 :
+				#var bpos : Vector2i =  pos-Vector2i(cx,cy)
+				#var prev_weight : float = get_point_weight_scale(bpos)
+	set_point_weight_scale(pos,weight_scale)
+				#set_point_solid(pos-Vector2i(cx,cy), true)
+	
 
 func get_tilestack_cost(ts : Array, swimmer : bool, flyer : bool, big : bool) -> float :
 	#returns -1 if not walkable, else the movement cost
 	if ts.is_empty() :
-		return false
+		return -1
 	var stacksize : int = ts.size()
 	var mov_cost : int = 0
 	for i  in range(stacksize) :
 		var tdict : Dictionary = ts[stacksize-i-1]
 		var iswalkable : bool = tdict['wall'] == 0
-		iswalkable = iswalkable and (tdict['water']==0 or (tdict['water']!=0 and swimmer))
-		iswalkable = iswalkable and ( (tdict['swall']==0) or  (tdict['swall']!=0 and (flyer or big)) )
+		#iswalkable = iswalkable and (tdict['water']==0 or (tdict['water']!=0 and swimmer))
+		#iswalkable = iswalkable and ( (tdict['swall']==0) or  (tdict['swall']!=0 and (flyer or big)) )
 #		if tdict["time"] > 20 :
 #			return -1
 #		if tdict["name"]=="Big_tree_top_4" :
@@ -110,10 +128,11 @@ func update_blocked_by_creas(creas_array : Array, active_crea : Creature) :
 			continue
 		for x in range(c.size.x) :
 			for y in range(c.size.y) :
-				for cx in range(crea_size.x) :
-					for cy in range(crea_size.y) :
-						#print("MyAstar2D update_blocked_by_creas : "+c.name+' '+str(c.position) + str(Vector2(x,y)) + str(Vector2(cx,cy)))
-						block_pos(c.position + Vector2(x,y) - Vector2(cx,cy))
+				block_pos(c.position + Vector2(x,y))
+				#for cx in range(crea_size.x) :
+					#for cy in range(crea_size.y) :
+						##print("MyAstar2D update_blocked_by_creas : "+c.name+' '+str(c.position) + str(Vector2(x,y)) + str(Vector2(cx,cy)))
+						#block_pos(c.position + Vector2(x,y) - Vector2(cx,cy))
 				
 
 #func generate_graph_part(topleft: Vector2, botrigt : Vector2, data : Array, also_disconnect : bool = false) :

@@ -14,7 +14,7 @@ static func get_range_between_creas(crea : Creature, othercrea : Creature) ->int
 	print("test crea script get_range_between_creas returns", min_range)
 	return min_range
 
-
+## returns an array of Creatures
 static func get_closest_creas_not_of_side(crea : Creature, notside : int) -> Array :
 	var found_creas : Array = []
 	var found_range : int = 9999
