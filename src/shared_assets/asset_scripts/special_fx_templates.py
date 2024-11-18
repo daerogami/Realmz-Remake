@@ -110,6 +110,22 @@ waterworld_template = """static func special_effect(_castercrea, _spell, _power,
 	return true
 """
 
+death_template = """static func special_effect(_castercrea, _spell, _power, _main_targeted_tile, _effected_tiles, _effected_creas, _add_terrain) :
+	#print('Death Special effect _effected_creas size : ', _effected_creas.size())
+	#var deathspell = StateMachine.cb_anim_state.cur_action['spell']
+	for creab in _effected_creas :
+		#print('death : ', creab.creature.name)
+		#var accuracyArray : Array = GameGlobal.calculate_spell_accuracy(_castercrea, creab.creature, deathspell, _power)
+		#print('Death accuracyArray : ', accuracyArray)
+		#var accuracy : float = accuracyArray[0]
+		var accuracy = creab.creature.get_stat('EvasionMagic') + (1.0-creab.creature.get_stat('MultiplierMagic')) - 0.1*_power
+		if randf()>accuracy :
+			UI.ow_hud.creatureRect.logrect.log_other_text(creab.creature, ' survived.', null,'')
+		else :
+			creab.creature.change_cur_hp(- creab.creature.get_stat('curHP') - 10)
+			UI.ow_hud.creatureRect.logrect.log_other_text(creab.creature, ' died.', null,'')
+	return true"""
+
 special_fx = {
     1: effect(waterworld_template),
     3: effect(discover_secret_template),
@@ -118,5 +134,6 @@ special_fx = {
     50: effect(shine_template),
     56: effect(phase_template, phase_args),
     61: effect(destroy_magic_template),
-    63: effect(discover_magic_template)
+    63: effect(discover_magic_template),
+    49: effect(death_template)
 }

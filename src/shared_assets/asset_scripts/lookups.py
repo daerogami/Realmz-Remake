@@ -153,7 +153,8 @@ TRAITS = {
     37: "t_hindered_atk.gd",
     38: "t_hindered_def.gd",
     39: "t_def_bonus.gd",
-    40: "t_dumb.gd"  # silenced, same efefct as tangled i think
+    40: "t_dumb.gd",  # silenced, same efefct as tangled i think
+    51: "t_charmed.gd",
 }
 
 
