@@ -9,7 +9,7 @@ var tags : Array = {tags}
 var schools : Array = {schools}
 
 # Fuction of target type, effect (phase), and line of sight
-var targettile : int = {target_type}  #0=anywhere 1=creature 2=empty 3=nowall 
+var targettile : int = {target_type}  #0=anywhere 1=creature 2=empty 3=nowall
 
 var level : int = {level}
 var selection_cost : int = {selection_cost}

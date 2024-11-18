@@ -259,4 +259,22 @@ def get_special_effect_function(row):
         return special_fx[int(row['effect'])](row)
     return ""
 
+def get_target_type(row):
+    is_summon = row['effect'] == '58'
+    if is_summon:
+        return 2
+    
+    los = get_los(row) == 'true'
+    if los:
+        return 3
+    
+    target_type = TargetType(row['target_type']).value
+    
+    match target_type:
+        case TargetType.SINGLE_TARGET.value:
+          return 1
+        case TargetType.MULTI_TARGET.value:
+          return 1
+        case _:
+          return 0
 

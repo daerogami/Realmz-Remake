@@ -23,7 +23,8 @@ from spell_utils import (
     get_traits,
     get_targets,
     get_aoe,
-    get_attributes
+    get_attributes,
+    get_target_type
 )
 from spell_template import gdscript_template
 
@@ -50,7 +51,7 @@ with open(csv_file_path, mode='r', encoding='utf-8') as csv_file:
         
         gdscript_content = gdscript_template.format(
             name=row['name'],
-            target_type=row['target_type'],
+            target_type=get_target_type(row),
             base_cost=row['base_cost'],
             usable_in_camp='true' if row['usable_in_camp'] == '1' else 'false',
             usable_in_combat='true' if row['usable_in_combat'] == '1' else 'false',
