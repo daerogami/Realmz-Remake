@@ -1,7 +1,6 @@
 from typing import Dict
 from lookups import level_spellpoint_lookup
 from spell_utils import (
-    generate_filename,
     get_proj_tex,
     get_proj_hit,
     get_sounds,
@@ -24,7 +23,6 @@ from spell_utils import (
     get_attributes,
     get_target_type
 )
-
 
 def build_data(row: Dict[str, str]) -> Dict[str, str]: 
     damage = parse_damage(row['damage'])

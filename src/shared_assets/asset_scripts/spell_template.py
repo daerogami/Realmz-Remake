@@ -5,7 +5,6 @@ var attributes : Array = {attributes}
 # Can we auto-generate this?
 var tags : Array = {tags}
 
-# Not merged with duplicates
 var schools : Array = {schools}
 
 # Fuction of target type, effect (phase), and line of sight
@@ -18,7 +17,6 @@ var in_field : bool = {usable_in_camp}
 var in_combat : bool = {usable_in_combat}
 var description : String = '{description}'
 
-# How does this work?
 var resist : int = 0 #ignores resistances and dodge 
 var los : bool = {is_los} # line of sight
 var ray : bool = {is_ray}
@@ -51,7 +49,6 @@ static func get_max_damage(_power:int, _casterchar) :
 static func get_damage_roll(_power : int, _casterchar) :
 {damage_roll}
 
-# How does this work?
 static func get_accuracy(_casterchar, _power : int) :
 \treturn 100 #= infinite wiith resist==0 anyway
 
