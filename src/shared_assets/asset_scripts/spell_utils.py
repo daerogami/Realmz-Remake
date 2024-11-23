@@ -1,6 +1,6 @@
 import re
 import json
-from lookups import icon_lookup, sound_lookup, TRAITS, TargetType, size_to_aoe, effect_to_attribute
+from lookups import icon_lookup, sound_lookup, TRAITS, TargetType, size_to_aoe, damage_type_to_attribute, effect_to_tag
 from traits_template import traits_template, traits_template_level
 from special_fx_templates import special_fx
 
@@ -253,11 +253,20 @@ def get_aoe(target_type: TargetType, size: int):
         case _:
             return "'b1'" # default to single target
         
-def get_attributes(effect: int):
-    attributes = ["'Magical'"]
-    if (effect in effect_to_attribute):
-      attributes.append(f"'{effect_to_attribute[effect]}'")
+def get_attributes(row):
+    damage_type = int(row['damage_type'])
+    attributes = []
+    if (damage_type in damage_type_to_attribute):
+      attributes.append(f"'{damage_type_to_attribute[damage_type]}'")
     return f"[{','.join(attributes)}]"
+
+def get_tags(row):
+    effect = int(row['effect'])
+    tags = []
+    if (effect in effect_to_tag):
+      tags.append(f"'{effect_to_tag[effect]}'")
+    return f"[{','.join(tags)}]"
+    
 
 def get_special_effect_function(row):
     if (int(row['effect']) in special_fx):

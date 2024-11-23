@@ -21,7 +21,8 @@ from spell_utils import (
     get_targets,
     get_aoe,
     get_attributes,
-    get_target_type
+    get_target_type,
+    get_tags
 )
 
 def build_data(row: Dict[str, str]) -> Dict[str, str]: 
@@ -39,7 +40,7 @@ def build_data(row: Dict[str, str]) -> Dict[str, str]:
         'resist_adjust': row['resist_adjust'],
         'can_rotate': 'true' if row['can_rotate'] == '1' else 'false',
         'range': get_range(range),
-        'tags': [],
+        'tags': get_tags(row),
         'schools': [row['caster_class']],
         'proj_tex': get_proj_tex(row['cast_media']),
         'proj_hit': get_proj_hit(row['resolution_media']),
@@ -58,5 +59,5 @@ def build_data(row: Dict[str, str]) -> Dict[str, str]:
         'level': row['level'],
         'targets': get_targets(row['target_type']),
         'aoe': get_aoe(row['target_type'], int(row['size'])),
-        'attributes': get_attributes(int(row['effect']))
+        'attributes': get_attributes(row)
     }
