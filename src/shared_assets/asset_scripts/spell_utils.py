@@ -219,15 +219,14 @@ def get_range(range):
 
 
 def get_traits(effect):
-    
-    
-    if (int(effect) in TRAITS):
-        if (int(effect) in [17,18,19,20,21]):
-            return traits_template_level.format(trait_filename=TRAITS[int(effect)], level=int(effect)-16)
-        if (int(effect) in [31,32]):
-            return traits_template_level.format(trait_filename=TRAITS[int(effect)], level=33)
-        return traits_template.format(trait_filename=TRAITS[int(effect)])
-    return ""
+    if (not int(effect) in TRAITS):
+        return ""
+    if (int(effect) in [17,18,19,20,21]):
+        return traits_template_level.format(trait_filename=TRAITS[int(effect)], level=int(effect)-16)
+    if (int(effect) in [31,32]):
+        return traits_template_level.format(trait_filename=TRAITS[int(effect)], level=33)
+    return traits_template.format(trait_filename=TRAITS[int(effect)])
+
 
 
 def get_targets(target_type: TargetType):
