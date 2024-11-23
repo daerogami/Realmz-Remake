@@ -1,7 +1,7 @@
 import re
 import json
 from lookups import icon_lookup, sound_lookup, TRAITS, TargetType, size_to_aoe, effect_to_attribute
-from traits_template import traits_template
+from traits_template import traits_template, traits_template_level
 from special_fx_templates import special_fx
 
 # Load descriptions.json
@@ -219,7 +219,13 @@ def get_range(range):
 
 
 def get_traits(effect):
+    
+    
     if (int(effect) in TRAITS):
+        if (int(effect) in [17,18,19,20,21]):
+            return traits_template_level.format(trait_filename=TRAITS[int(effect)], level=int(effect)-16)
+        if (int(effect) in [31,32]):
+            return traits_template_level.format(trait_filename=TRAITS[int(effect)], level=33)
         return traits_template.format(trait_filename=TRAITS[int(effect)])
     return ""
 
