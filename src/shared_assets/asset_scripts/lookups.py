@@ -157,7 +157,6 @@ TRAITS = {
     51: "t_charmed.gd",
 }
 
-
 size_to_aoe = {
     4: "'b4'",  # 3x3
     7: "'b7'",
@@ -173,13 +172,13 @@ effect_to_tag = {
 
 damage_type_to_attribute = {
     0: "Charm",
-    1: "Heat",
-    2: "Cold",
+    1: "Fire",
+    2: "Ice",
     3: "Electric",
     4: "Chemical",
     5: "Mental",
-    6: "Magical",
-    7: "Special",
-    8: "Misc",
-    9: "Missile Weapon",
+    # 6: "Magical",
+    7: "Disease",  # Special?
+    8: "Healing",
+    9: "Projectile",
 }

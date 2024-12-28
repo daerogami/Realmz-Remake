@@ -255,14 +255,14 @@ def get_aoe(target_type: TargetType, size: int):
         
 def get_attributes(row):
     damage_type = int(row['damage_type'])
-    attributes = []
+    attributes = ["'Magical'"]
     if (damage_type in damage_type_to_attribute):
       attributes.append(f"'{damage_type_to_attribute[damage_type]}'")
     return f"[{','.join(attributes)}]"
 
 def get_tags(row):
     effect = int(row['effect'])
-    tags = []
+    tags = ["'Magical'"]
     if (effect in effect_to_tag):
       tags.append(f"'{effect_to_tag[effect]}'")
     return f"[{','.join(tags)}]"
