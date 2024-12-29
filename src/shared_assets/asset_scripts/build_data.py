@@ -52,7 +52,7 @@ def build_data(row: Dict[str, str]) -> Dict[str, str]:
         'min_duration': get_min_duration(duration),
         'max_duration': get_max_duration(duration),
         'duration_roll': get_duration_roll(duration),
-        'selection_cost': level_spellpoint_lookup[row['level']],
+        'selection_cost': level_spellpoint_lookup[row['level']] if row['level'] else 0,
         'add_traits_to_target': get_traits(row["effect"]),
         'is_ray': 'true' if row['target_type'] == '6' else 'false',
         'is_los': get_los(row),

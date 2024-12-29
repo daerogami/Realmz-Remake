@@ -6,7 +6,7 @@ from spell_utils import generate_filename
 from build_data import build_data
 
 # Define the path to your CSV file
-csv_file_path = 'spells.csv'
+csv_file_path = 'spells2.csv'
 # Define the directory where the GDScript files will be saved
 output_dir = 'gd_scripts'
 
