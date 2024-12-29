@@ -157,13 +157,7 @@ static func _mod_equippable(character) :
 	character.equippable_types["Warhammer/Maul"] -=10
 
 static func _add_base_stats(character) :
-	for s in base_stat_bonuses :
-		if typeof (base_stat_bonuses[s] ) == TYPE_DICTIONARY  :
-			if not character.base_stats.has(s) :
-				character.base_stats[s] = {}
-				for t in base_stat_bonuses[s] :
-					character.base_stats[s][t] = 0
-			for t in base_stat_bonuses[s] :
+	for s in base_stat_bonuses : :
 				character.base_stats[s][t] += base_stat_bonuses[s][t]
 		else :
 			if not character.base_stats.has(s) :
@@ -204,13 +198,13 @@ static func _character_creation_gifts(_character) :
 	print("class.gd adding spell to newly created  sorcerer "+_character.name)
 	resources.load_spell_resources( "res://shared_assets/spells/" )
 	print("class.gd load_spell_resources  finished")
-	_character.add_spell_from_spells_book("Heal Minor Wounds",1) #fuction in creature.gd
-	_character.add_spell_from_spells_book("Plane of Frost",1)
+	_character.add_spell_from_spells_book("Heal Small Wounds",1) #fuction in creature.gd
+	# _character.add_spell_from_spells_book("Plane of Frost",1)
 	_character.add_spell_from_spells_book("Phase",1)
-	_character.add_spell_from_spells_book("Summon Alien Beetle",1)
-	_character.add_spell_from_spells_book("Bear Form",1)
+	# _character.add_spell_from_spells_book("Summon Alien Beetle",1)
+	# _character.add_spell_from_spells_book("Bear Form",1)
 	_character.add_spell_from_spells_book("Cosmic Blast",1)
-	_character.add_spell_from_spells_book("Heat Ray",1)
+	# _character.add_spell_from_spells_book("Heat Ray",1)
 	_character.add_spell_from_spells_book("Discover Magic",1)
 	_character.add_spell_from_spells_book("Death",7)
 	print("class.gd DONE adding spell to newly created  sorcerer "+_character.name)

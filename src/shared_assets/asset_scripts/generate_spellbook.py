@@ -5,7 +5,7 @@ import argparse
 # Set up argument parser
 parser = argparse.ArgumentParser(
     description='Collect .gd files into a JSON file.')
-parser.add_argument('--source_dir', default='../Spells 1fileperspell',
+parser.add_argument('--source_dir', default='./gd_scripts',
                     help='Source directory containing .gd files')
 parser.add_argument('--target_dir', default='../spells',
                     help='Target directory for the JSON file')
