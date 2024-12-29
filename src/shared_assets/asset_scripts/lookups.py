@@ -178,7 +178,7 @@ damage_type_to_attribute = {
     4: "Chemical",
     5: "Mental",
     # 6: "Magical",
-    7: "Disease",  # Special?
-    8: "Healing",
+    7: "Special",
+    8: "Misc",
     9: "Projectile",
 }
