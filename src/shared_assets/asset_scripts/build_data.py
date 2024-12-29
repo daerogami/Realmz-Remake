@@ -31,7 +31,7 @@ def build_data(row: Dict[str, str]) -> Dict[str, str]:
     range = parse_range(row['range'])
 
     return {
-        'name': row['name'],
+        'name': row['name'].replace("'", "\\'"),
         'target_type': get_target_type(row),
         'base_cost': row['base_cost'],
         'usable_in_camp': 'true' if row['usable_in_camp'] == '1' else 'false',

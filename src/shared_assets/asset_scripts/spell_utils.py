@@ -99,7 +99,7 @@ def parse_damage(damage_field):
 def get_description(row):
     name = row['name']
     caste = row['caster_class']
-    return descriptions.get(caste).get(name) if descriptions.get(caste) and name in descriptions.get(caste) else name
+    return descriptions.get(caste).get(name) if descriptions.get(caste) and name in descriptions.get(caste) else name.replace("'", "\\'")
 
 
 def get_los(row):
