@@ -6,7 +6,7 @@ def process_spell_block(block):
     spell_data = {}
     
     # Extract spell id, code, and details from the header
-    header_match = re.match(r'===== SPELL id=(\d+) \[(SPL\d+)\] \(\((.+)\/(?:L(\d+)|([^L]+))\) ([^\)]+)\)', block)
+    header_match = re.match(r'===== SPELL id=(\d+) \[(SPL\d+)\] \(\((.+)\/(?:L(\d+)|([^L]+))\) (.+)\)', block)
     if header_match:
         spell_data['id'] = header_match.group(1)
         spell_data['code'] = header_match.group(2)
