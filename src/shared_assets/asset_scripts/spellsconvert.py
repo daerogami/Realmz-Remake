@@ -13,6 +13,11 @@ def process_spell_block(block):
         spell_data['caster_class'] = header_match.group(3)
         spell_data['level'] = header_match.group(4)
         spell_data['name'] = header_match.group(6)
+       # Check if group 5 starts with "Special" and append it to group 3
+        if header_match.group(5) and header_match.group(3).startswith("Special"):
+            spell_data['caster_class'] += '/' + header_match.group(5)
+            print(spell_data['caster_class'])
+
 
     # Extract other fields
     for line in block.split('\n'):

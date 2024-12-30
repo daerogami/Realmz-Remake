@@ -23,6 +23,8 @@ def generate_filename(caster_class, spell_id, spell_name):
     """
     # Extract the first character of the caster class
     class_initial = caster_class[0].upper()
+    if caster_class.startswith('Special'):
+        class_initial = 'X'
     # Extract the last three digits of the spell ID and format them as X-XX
     id_format = f"{spell_id[-3:-2]}-{spell_id[-2:]}"
 
