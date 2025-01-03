@@ -56,7 +56,7 @@ def build_data(row: Dict[str, str]) -> Dict[str, str]:
         'add_traits_to_target': get_traits(row["effect"]),
         'is_ray': 'true' if row['target_type'] == '6' else 'false',
         'is_los': get_los(row),
-        'level': row['level'],
+        'level': row['level'] if row['level'] else 0,
         'targets': get_targets(row['target_type']),
         'aoe': get_aoe(row['target_type'], int(row['size'])),
         'attributes': get_attributes(row)

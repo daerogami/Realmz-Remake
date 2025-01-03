@@ -157,7 +157,13 @@ static func _mod_equippable(character) :
 	character.equippable_types["Warhammer/Maul"] -=10
 
 static func _add_base_stats(character) :
-	for s in base_stat_bonuses : :
+	for s in base_stat_bonuses :
+		if typeof (base_stat_bonuses[s] ) == TYPE_DICTIONARY  :
+			if not character.base_stats.has(s) :
+				character.base_stats[s] = {}
+				for t in base_stat_bonuses[s] :
+					character.base_stats[s][t] = 0
+			for t in base_stat_bonuses[s] :
 				character.base_stats[s][t] += base_stat_bonuses[s][t]
 		else :
 			if not character.base_stats.has(s) :

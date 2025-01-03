@@ -242,7 +242,7 @@ func equals_args(args : Array) ->bool :
 	"equippable" : 1 ,
 		"stats_mini" : "Damage : 1-6",
 		"stats" : {},
-	"_on_combat_use_spell" : ["Bow Shot",1],
+	"_on_combat_use_spell" : ["Arrow",1],
    },
    "Quiver" :
    {
