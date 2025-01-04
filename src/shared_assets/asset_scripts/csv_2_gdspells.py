@@ -1,90 +1,59 @@
 import csv
 import os
-import re
-from lookups import level_spellpoint_lookup
-from spell_utils import (
-    generate_filename,
-    get_proj_tex,
-    get_proj_hit,
-    get_sounds,
-    get_special_effect_function,
-    parse_damage,
-    get_description,
-    get_los,
-    get_min_damage,
-    get_max_damage,
-    get_damage_roll,
-    get_min_duration,
-    get_max_duration,
-    get_duration_roll,
-    parse_duration,
-    parse_range,
-    get_range,
-    get_traits,
-    get_targets,
-    get_aoe,
-    get_attributes
-)
+
 from spell_template import gdscript_template
+from spell_utils import generate_filename
+from build_data import build_data
 
 # Define the path to your CSV file
-csv_file_path = 'spells.csv'
+csv_file_path = 'spells2.csv'
 # Define the directory where the GDScript files will be saved
 output_dir = 'gd_scripts'
 
 # Ensure the output directory exists
 os.makedirs(output_dir, exist_ok=True)
 
-# Note: You'll need to adjust the code that fills in the template to include the new fields and logic.
-# For example, `sp_cost_formula` should be set to `_power*2` for spells like "Enchanted Blade",
-# and `special_effect_function` should include the logic for `add_traits_to_target` when applicable.
+# Dictionary to hold rows by caster class
+caster_class_rows = {}
 
 # Open the CSV file and read data
 with open(csv_file_path, mode='r', encoding='utf-8') as csv_file:
     csv_reader = csv.DictReader(csv_file)
     for row in csv_reader:
-        # Prepare the content for the GDScript file
-        damage = parse_damage(row['damage'])
-        duration = parse_duration(row['duration'])
-        range = parse_range(row['range'])
-        
-        gdscript_content = gdscript_template.format(
-            name=row['name'],
-            target_type=row['target_type'],
-            base_cost=row['base_cost'],
-            usable_in_camp='true' if row['usable_in_camp'] == '1' else 'false',
-            usable_in_combat='true' if row['usable_in_combat'] == '1' else 'false',
-            description=get_description(row),
-            resist_adjust=row['resist_adjust'],
-            can_rotate='true' if row['can_rotate'] == '1' else 'false',
-            range=get_range(range),
-            tags=[],
-            schools=[row['caster_class']],
-            proj_tex=get_proj_tex(row['cast_media']),
-            proj_hit=get_proj_hit(row['resolution_media']),
-            sounds=get_sounds(row['cast_media'], row['resolution_media']),
-            special_effect_function=get_special_effect_function(row),
-            min_damage=get_min_damage(damage),
-            max_damage=get_max_damage(damage),
-            damage_roll=get_damage_roll(damage, int(row['effect'])),
-            min_duration=get_min_duration(duration),
-            max_duration=get_max_duration(duration),
-            duration_roll=get_duration_roll(duration),
-            selection_cost=level_spellpoint_lookup[row['level']],
-            add_traits_to_target=get_traits(row["effect"]),
-            is_ray='true' if row['target_type'] == '6' else 'false',
-            is_los=get_los(row),
-            level=row['level'],
-            targets=get_targets(row['target_type']),
-            aoe=get_aoe(row['target_type'], int(row['size'])),
-            attributes=get_attributes(int(row['effect']))
+        caster_class = row['caster_class']
+        if caster_class not in caster_class_rows:
+            caster_class_rows[caster_class] = []
+        caster_class_rows[caster_class].append(row)
+
+# List to hold the merged rows
+csv_rows = []
+
+# Merge the rows by taking one spell from each caster class each cycle
+while any(caster_class_rows.values()):
+    for caster_class in list(caster_class_rows.keys()):
+        if caster_class_rows[caster_class]:
+            csv_rows.append(caster_class_rows[caster_class].pop(0))
+
+# Dictionary to hold all the data by spell name
+all_spells = {}
+
+# Process the rows to build the data
+for row in csv_rows:
+    spell_name = row['name']
+    if spell_name in all_spells:
+        # Add the caster_class to the school array if the spell already exists
+        print(
+            f"Spell {spell_name} already exists. Adding {row['caster_class']} to schools array."
         )
+        all_spells[spell_name][1]['schools'].append(row['caster_class'])
+    else:
+        data = build_data(row)
+        all_spells[spell_name] = (row, data)
 
-        # Define the file name for the GDScript file
-        filename = generate_filename(
-            row['caster_class'], row['code'], row['name'])
-        # Save the GDScript file
-        with open(os.path.join(output_dir, filename), 'w', encoding='utf-8') as gdscript_file:
-            gdscript_file.write(gdscript_content)
-
-        print(f"Generated GDScript file for spell: {row['name']}")
+# Write the GDScript files
+for spell_name, (row, data) in all_spells.items():
+    gdscript_content = gdscript_template.format(**data)
+    filename = generate_filename(row['caster_class'], row['code'], spell_name)
+    with open(os.path.join(output_dir, filename), 'w', encoding='utf-8') as gdscript_file:
+        gdscript_file.write(gdscript_content)
+    print(f"Generated GDScript file for spell: {spell_name}")

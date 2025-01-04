@@ -5,7 +5,7 @@ import argparse
 # Set up argument parser
 parser = argparse.ArgumentParser(
     description='Collect .gd files into a JSON file.')
-parser.add_argument('--source_dir', default='../Spells 1fileperspell',
+parser.add_argument('--source_dir', default='./gd_scripts',
                     help='Source directory containing .gd files')
 parser.add_argument('--target_dir', default='../spells',
                     help='Target directory for the JSON file')
@@ -42,6 +42,6 @@ json_file_path = os.path.join(target_dir, json_filename)
 
 # Write the dictionary to a JSON file in the target directory
 with open(json_file_path, 'w', encoding='utf-8') as json_file:
-    json.dump(gd_files_content, json_file)
+    json.dump(gd_files_content, json_file, indent=2)
 
 print(f"Your spellbook is in {json_file_path}")

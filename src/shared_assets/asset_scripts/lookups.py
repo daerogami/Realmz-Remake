@@ -153,9 +153,9 @@ TRAITS = {
     37: "t_hindered_atk.gd",
     38: "t_hindered_def.gd",
     39: "t_def_bonus.gd",
-    40: "t_dumb.gd"  # silenced, same efefct as tangled i think
+    40: "t_dumb.gd",  # silenced, same efefct as tangled i think
+    51: "t_charmed.gd",
 }
-
 
 size_to_aoe = {
     4: "'b4'",  # 3x3
@@ -166,10 +166,19 @@ size_to_aoe = {
     14: "'cr'",  # super donut solar flare
 }
 
-effect_to_attribute = {
+effect_to_tag = {
     57: "Healing",
 }
 
 damage_type_to_attribute = {
-    
+    0: "Charm",
+    1: "Fire",
+    2: "Ice",
+    3: "Electric",
+    4: "Chemical",
+    5: "Mental",
+    # 6: "Magical",
+    7: "Special",
+    8: "Misc",
+    9: "Projectile",
 }

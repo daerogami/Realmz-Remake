@@ -1,7 +1,7 @@
 import re
 import json
-from lookups import icon_lookup, sound_lookup, TRAITS, TargetType, size_to_aoe, effect_to_attribute
-from traits_template import traits_template
+from lookups import icon_lookup, sound_lookup, TRAITS, TargetType, size_to_aoe, damage_type_to_attribute, effect_to_tag
+from traits_template import traits_template, traits_template_level
 from special_fx_templates import special_fx
 
 # Load descriptions.json
@@ -23,6 +23,8 @@ def generate_filename(caster_class, spell_id, spell_name):
     """
     # Extract the first character of the caster class
     class_initial = caster_class[0].upper()
+    if caster_class.startswith('Special'):
+        class_initial = 'X'
     # Extract the last three digits of the spell ID and format them as X-XX
     id_format = f"{spell_id[-3:-2]}-{spell_id[-2:]}"
 
@@ -99,7 +101,7 @@ def parse_damage(damage_field):
 def get_description(row):
     name = row['name']
     caste = row['caster_class']
-    return descriptions[caste][name] if name in descriptions[caste] else name
+    return descriptions.get(caste).get(name) if descriptions.get(caste) and name in descriptions.get(caste) else name.replace("'", "\\'")
 
 
 def get_los(row):
@@ -219,9 +221,14 @@ def get_range(range):
 
 
 def get_traits(effect):
-    if (int(effect) in TRAITS):
-        return traits_template.format(trait_filename=TRAITS[int(effect)])
-    return ""
+    if (not int(effect) in TRAITS):
+        return ""
+    if (int(effect) in [17,18,19,20,21]):
+        return traits_template_level.format(trait_filename=TRAITS[int(effect)], level=int(effect)-16)
+    if (int(effect) in [31,32]):
+        return traits_template_level.format(trait_filename=TRAITS[int(effect)], level=33)
+    return traits_template.format(trait_filename=TRAITS[int(effect)])
+
 
 
 def get_targets(target_type: TargetType):
@@ -248,15 +255,42 @@ def get_aoe(target_type: TargetType, size: int):
         case _:
             return "'b1'" # default to single target
         
-def get_attributes(effect: int):
+def get_attributes(row):
+    damage_type = int(row['damage_type'])
     attributes = ["'Magical'"]
-    if (effect in effect_to_attribute):
-      attributes.append(f"'{effect_to_attribute[effect]}'")
+    if (damage_type in damage_type_to_attribute):
+      attributes.append(f"'{damage_type_to_attribute[damage_type]}'")
     return f"[{','.join(attributes)}]"
+
+def get_tags(row):
+    effect = int(row['effect'])
+    tags = ["'Magical'"]
+    if (effect in effect_to_tag):
+      tags.append(f"'{effect_to_tag[effect]}'")
+    return f"[{','.join(tags)}]"
+    
 
 def get_special_effect_function(row):
     if (int(row['effect']) in special_fx):
         return special_fx[int(row['effect'])](row)
     return ""
 
+def get_target_type(row):
+    is_summon = row['effect'] == '58'
+    if is_summon:
+        return 2
+    
+    los = get_los(row) == 'true'
+    if los:
+        return 3
+    
+    target_type = TargetType(row['target_type']).value
+    
+    match target_type:
+        case TargetType.SINGLE_TARGET.value:
+          return 1
+        case TargetType.MULTI_TARGET.value:
+          return 1
+        case _:
+          return 0
 
