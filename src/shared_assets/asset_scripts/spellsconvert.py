@@ -55,4 +55,4 @@ with open('spells2.csv', 'w', newline='') as csvfile:
     writer.writeheader()
     writer.writerows(data)
 
-print("Conversion complete. Data saved to spells.csv.")
+print("Conversion complete. Data saved to spells2.csv.")
